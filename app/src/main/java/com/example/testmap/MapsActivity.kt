@@ -14,11 +14,37 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.testmap.databinding.ActivityMapsBinding
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Marker
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+
+    data class Mission(
+        val id: String,
+        val lat: Double,
+        val lng: Double,
+        var completed: Boolean = false
+    )
+
+    private val missions = mutableListOf<Mission>()
+
+    //private val missionMarkers = mutableListOf<String, Marker>()
+
+    private fun showMissionsOnMap() {
+        val missions = listOf(
+            Mission("1", 50.0652, 19.9452),
+            Mission("2", 50.0644, 19.9454)
+        )
+
+        missions.forEach { mission -> mMap.addMarker(
+            MarkerOptions().position(LatLng(mission.lat, mission.lng))
+                .title("Mission ${mission.id}").icon(BitmapDescriptorFactory.defaultMarker(
+                    BitmapDescriptorFactory.HUE_RED)))
+         }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +71,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         enableMyLocation()
 
         val krakow = LatLng(50.0647, 19.9450)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(krakow, 12f))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(krakow, 18f))
+
+        showMissionsOnMap()
     }
 
     private fun enableMyLocation() {
@@ -76,3 +104,5 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 }
+
+
