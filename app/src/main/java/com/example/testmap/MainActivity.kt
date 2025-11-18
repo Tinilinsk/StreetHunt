@@ -1,5 +1,6 @@
 package com.example.testmap
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findViewById<Button>(R.id.supabutton)
             .setOnClickListener {
-                Log.d("BUTTONS", "User tapped the Supabutton")
+                startActivity(Intent(this, MapsActivity::class.java))
             }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

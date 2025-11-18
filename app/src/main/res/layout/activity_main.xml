@@ -20,12 +20,8 @@
             android:id="@+id/supabutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ok" />
+            android:text="Generate mission" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hello worl"></TextView>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
