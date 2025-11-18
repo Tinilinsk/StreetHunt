@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.example.testmap.databinding.ActivityMapsBinding
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import android.location.Location
 import com.google.android.gms.maps.model.Marker
 import kotlin.math.PI
 import kotlin.math.cos
@@ -31,6 +32,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         const val MIN_DISTANCE_METERS = 50.0  // 50 meters minimum
         const val MAX_DISTANCE_METERS = 200.0 // 200 meters maximum
         const val METERS_PER_DEGREE = 111320.0 // meters in one degree
+
+        const val MISSION_COMPLETE_DISTANCE = 30.0 // 30 meters
     }
     data class Mission(
         val id: String,
@@ -39,13 +42,41 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         var completed: Boolean = false
     )
 
+    val missions = mutableListOf<Mission>()
     private var missionGenerated = false
     //private val missionMarkers = mutableListOf<String, Marker>()
 
+    private fun checkMissionCompletion(userLat: Double, userLng: Double) {
+        missions.forEach { mission ->
+            if (!mission.completed) {
+                val distance = calculateDistance(userLat, userLng, mission.lat, mission.lng)
+                if (distance <= MISSION_COMPLETE_DISTANCE) {
+                    completeMission(mission.id)
+                    Toast.makeText(this, "Mission ${mission.id} completed! Distance: ${"%.1f".format(distance)}m", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun calculateDistance(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
+        val results = FloatArray(1)
+        Location.distanceBetween(lat1, lng1, lat2, lng2, results)
+        return results[0].toDouble()
+    }
+
+    private fun completeMission(missionId: String) {
+        val mission = missions.find { it.id == missionId }
+        mission?.completed = true
+        updateMissionMarker(mission!!)
+    }
+
+    private fun updateMissionMarker(mission: Mission) {
+        Toast.makeText(this, "Mission ${mission.id} completed!", Toast.LENGTH_SHORT).show()
+    }
     private fun generateMissionsAroundUser(userLat: Double, userLng: Double) {
         if (missionGenerated) return
 
-        val missions = mutableListOf<Mission>()
+
 
         repeat(3) {
             index -> val mission = generateRandomMissions(userLat, userLng, index + 1)
@@ -121,6 +152,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (location != null) {
                     val userLat = location.latitude
                     val userLng = location.longitude
+
+                    checkMissionCompletion(userLat, userLng)
 
                     generateMissionsAroundUser(userLat, userLng)
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(userLat, userLng), 16f))
