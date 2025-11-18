@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -14,37 +15,72 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.testmap.databinding.ActivityMapsBinding
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
 
+    private companion object {
+        const val MIN_DISTANCE_METERS = 50.0  // 50 meters minimum
+        const val MAX_DISTANCE_METERS = 200.0 // 200 meters maximum
+        const val METERS_PER_DEGREE = 111320.0 // meters in one degree
+    }
     data class Mission(
         val id: String,
-        val lat: Double,
-        val lng: Double,
+        val lat: Double, // latitude, szerokosc
+        val lng: Double, // longitude, dlugosc
         var completed: Boolean = false
     )
 
-    private val missions = mutableListOf<Mission>()
-
+    private var missionGenerated = false
     //private val missionMarkers = mutableListOf<String, Marker>()
 
-    private fun showMissionsOnMap() {
-        val missions = listOf(
-            Mission("1", 50.0652, 19.9452),
-            Mission("2", 50.0644, 19.9454)
-        )
+    private fun generateMissionsAroundUser(userLat: Double, userLng: Double) {
+        if (missionGenerated) return
 
-        missions.forEach { mission -> mMap.addMarker(
-            MarkerOptions().position(LatLng(mission.lat, mission.lng))
-                .title("Mission ${mission.id}").icon(BitmapDescriptorFactory.defaultMarker(
-                    BitmapDescriptorFactory.HUE_RED)))
-         }
+        val missions = mutableListOf<Mission>()
+
+        repeat(3) {
+            index -> val mission = generateRandomMissions(userLat, userLng, index + 1)
+            missions.add(mission)
+        }
+        showMissionsOnMap(missions)
+        missionGenerated = true
     }
+
+    private fun generateRandomMissions(userLat: Double, userLng: Double, missionId: Int): Mission {
+        val distance = MIN_DISTANCE_METERS + Math.random() * (MAX_DISTANCE_METERS - MIN_DISTANCE_METERS)
+
+        val angle = Math.random() * 2 * Math.PI
+
+        val latOffset = (distance * Math.cos(angle)) / METERS_PER_DEGREE
+        val lngOffset = (distance * Math.sin(angle)) / (METERS_PER_DEGREE * Math.cos(Math.toRadians(userLat)))
+
+        val missionLat = userLat + latOffset
+        val missionLng = userLng + lngOffset
+
+        return Mission(missionId.toString(), missionLat, missionLng)
+    }
+
+    private fun showMissionsOnMap(missions: List<Mission>) {
+        missions.forEach { mission ->
+            val marker = mMap.addMarker(
+                MarkerOptions()
+                    .position(LatLng(mission.lat, mission.lng)).title("Mission ${mission.id}")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+            )
+        }
+    }
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,17 +105,44 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         enableMyLocation()
-
-        val krakow = LatLng(50.0647, 19.9450)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(krakow, 18f))
-
-        showMissionsOnMap()
     }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastKnownLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+
+
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    val userLat = location.latitude
+                    val userLng = location.longitude
+
+                    generateMissionsAroundUser(userLat, userLng)
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(userLat, userLng), 16f))
+                } else {
+                    if (!missionGenerated) {
+                        generateMissionsAroundUser(50.0647, 19.9450)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                if (!missionGenerated) {
+                    generateMissionsAroundUser(50.0647, 19.9450)
+                }
+            }
+    }
+
 
     private fun enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
             mMap.isMyLocationEnabled = true
+            getLastKnownLocation()
         } else {
             ActivityCompat.requestPermissions(
                 this,
