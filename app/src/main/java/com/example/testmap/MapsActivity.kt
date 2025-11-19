@@ -6,6 +6,7 @@ import android.widget.Toast
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Color
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -18,6 +19,7 @@ import com.example.testmap.databinding.ActivityMapsBinding
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import android.location.Location
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.Marker
 import kotlin.math.PI
 import kotlin.math.cos
@@ -64,6 +66,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return results[0].toDouble()
     }
 
+    private fun showMissionZones(missions: List<Mission>) {
+        missions.forEach { mission ->
+            mMap.addCircle(
+                CircleOptions()
+                    .center(LatLng(mission.lat, mission.lng))
+                    .radius(MISSION_COMPLETE_DISTANCE)
+                    .strokeColor(Color.parseColor("#FF0000"))
+                    .fillColor(Color.parseColor("#22FF0000"))
+                    .strokeWidth(2f)
+            )
+        }
+    }
     private fun completeMission(missionId: String) {
         val mission = missions.find { it.id == missionId }
         mission?.completed = true
@@ -83,6 +97,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             missions.add(mission)
         }
         showMissionsOnMap(missions)
+        showMissionZones(missions)
         missionGenerated = true
     }
 
@@ -129,6 +144,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         mMap.uiSettings.isZoomControlsEnabled = true
+
+
+
 
         mMap.setOnMarkerClickListener { marker ->
             Toast.makeText(this, "Clicked: ${marker.title}", Toast.LENGTH_SHORT).show()
