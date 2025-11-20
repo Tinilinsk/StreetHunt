@@ -19,6 +19,10 @@ import com.example.testmap.databinding.ActivityMapsBinding
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import android.location.Location
+import android.os.Looper
+import android.util.Log
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.Marker
 import kotlin.math.PI
@@ -30,9 +34,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var locationUpdatesStarted = false
     private companion object {
-        const val MIN_DISTANCE_METERS = 50.0  // 50 meters minimum
-        const val MAX_DISTANCE_METERS = 200.0 // 200 meters maximum
+        const val MIN_DISTANCE_METERS = 1.0  // 50 meters minimum
+        const val MAX_DISTANCE_METERS = 29.0 // 200 meters maximum
         const val METERS_PER_DEGREE = 111320.0 // meters in one degree
 
         const val MISSION_COMPLETE_DISTANCE = 30.0 // 30 meters
@@ -80,8 +86,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
     private fun completeMission(missionId: String) {
         val mission = missions.find { it.id == missionId }
-        mission?.completed = true
-        updateMissionMarker(mission!!)
+        mission?.let {
+            it.completed = true
+            Toast.makeText(this, "Mission ${mission.id} completed!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun updateMissionMarker(mission: Mission) {
@@ -99,6 +107,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         showMissionsOnMap(missions)
         showMissionZones(missions)
         missionGenerated = true
+
+        startLocationUpdates()
     }
 
     private fun generateRandomMissions(userLat: Double, userLng: Double, missionId: Int): Mission {
@@ -146,7 +156,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isZoomControlsEnabled = true
 
 
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         mMap.setOnMarkerClickListener { marker ->
             Toast.makeText(this, "Clicked: ${marker.title}", Toast.LENGTH_SHORT).show()
@@ -188,6 +198,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        if (locationUpdatesStarted) return
+
+        val locationRequest = LocationRequest.Builder(
+            Priority.PRIORITY_HIGH_ACCURACY, 5000 // 5 секунд
+        ).build()
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            object : LocationCallback() {
+                override fun onLocationResult(locationResult: LocationResult) {
+                    locationResult.lastLocation?.let { location ->
+                        val userLat = location.latitude
+                        val userLng = location.longitude
+                        Log.d("LOCATION_UPDATE", "New location: $userLat, $userLng")
+
+                        checkMissionCompletion(userLat, userLng)
+                    }
+                }
+            },
+            Looper.getMainLooper()
+        )
+        locationUpdatesStarted = true
+    }
 
     private fun enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
