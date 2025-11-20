@@ -23,6 +23,7 @@ import android.os.Looper
 import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.Marker
 import kotlin.math.PI
@@ -37,8 +38,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var locationUpdatesStarted = false
     private companion object {
-        const val MIN_DISTANCE_METERS = 1.0  // 50 meters minimum
-        const val MAX_DISTANCE_METERS = 29.0 // 200 meters maximum
+        const val MIN_DISTANCE_METERS = 50.0  // 50 meters minimum
+        const val MAX_DISTANCE_METERS = 200.0 // 200 meters maximum
         const val METERS_PER_DEGREE = 111320.0 // meters in one degree
 
         const val MISSION_COMPLETE_DISTANCE = 30.0 // 30 meters
@@ -47,7 +48,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val id: String,
         val lat: Double, // latitude, szerokosc
         val lng: Double, // longitude, dlugosc
-        var completed: Boolean = false
+        var completed: Boolean = false,
+        var circle: Circle? = null
     )
 
     val missions = mutableListOf<Mission>()
@@ -74,7 +76,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showMissionZones(missions: List<Mission>) {
         missions.forEach { mission ->
-            mMap.addCircle(
+            val circle = mMap.addCircle(
                 CircleOptions()
                     .center(LatLng(mission.lat, mission.lng))
                     .radius(MISSION_COMPLETE_DISTANCE)
@@ -82,12 +84,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     .fillColor(Color.parseColor("#22FF0000"))
                     .strokeWidth(2f)
             )
+            mission.circle = circle
         }
     }
     private fun completeMission(missionId: String) {
         val mission = missions.find { it.id == missionId }
         mission?.let {
             it.completed = true
+            it.circle?.apply {
+                strokeColor = Color.parseColor("#00FF00")
+                fillColor = Color.parseColor("#2200FF00")
+            }
             Toast.makeText(this, "Mission ${mission.id} completed!", Toast.LENGTH_SHORT).show()
         }
     }
