@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.core.app.ActivityCompat
@@ -56,6 +57,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private var missionGenerated = false
     //private val missionMarkers = mutableListOf<String, Marker>()
 
+    private fun openStreetView(mission: Mission) {
+        val intent = Intent(this, StreetViewActivity::class.java).apply {
+            putExtra("MISSION_LAT", mission.lat)
+            putExtra("MISSION_LNG", mission.lng)
+        }
+        startActivity(intent)
+    }
     private fun checkMissionCompletion(userLat: Double, userLng: Double) {
         missions.forEach { mission ->
             if (!mission.completed) {
@@ -138,7 +146,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 MarkerOptions()
                     .position(LatLng(mission.lat, mission.lng)).title("Mission ${mission.id}")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-            )
+            )?.apply {
+                tag = mission.id
+            }
         }
     }
 
@@ -166,8 +176,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         mMap.setOnMarkerClickListener { marker ->
-            Toast.makeText(this, "Clicked: ${marker.title}", Toast.LENGTH_SHORT).show()
-            true
+            val missionId = marker.tag as? String
+            if (missionId != null) {
+                Log.d("Street", "Mission id not null")
+                val mission = missions.find { it.id == missionId }
+                mission?.let {
+                    openStreetView(it)
+                }
+                true
+            } else {
+                Log.d("Street", "Mission id is null")
+                Toast.makeText(this, "Clicked: ${marker.title}", Toast.LENGTH_SHORT).show()
+                true
+            }
         }
 
         enableMyLocation()
