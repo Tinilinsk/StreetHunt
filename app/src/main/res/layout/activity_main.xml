@@ -8,9 +8,6 @@
     android:background="#1C1F26"
     tools:context=".MainActivity">
 
-    <!-- PRZYCISK Z TWOJEGO LAYOUTU -->
-
-    <!-- SCROLLVIEW Z CALYM UI FIGMY -->
     <ScrollView
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/scroll"
@@ -20,7 +17,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="30dp"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav">
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,7 +74,6 @@
                     />
             </LinearLayout>
 
-            <!-- ====== BADGE: WEATHER / FLAME / MAIL ====== -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,7 +83,6 @@
                 android:weightSum="3"
                 android:layout_gravity="center_horizontal">
 
-                <!-- WEATHER -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="180dp"
                     android:layout_height="48dp"
@@ -106,7 +101,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/sun"
+                            android:src="@drawable/sun"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -118,7 +113,6 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- FLAME -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="180dp"
                     android:layout_height="48dp"
@@ -150,10 +144,10 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- MAIL -->
+
             </LinearLayout>
 
-            <!-- ====== PROFIL ====== -->
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="88dp"
@@ -215,18 +209,7 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- ====== DAILY TASK ====== -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:padding="14dp"
-                app:cardBackgroundColor="#3B4360"
-                app:cardCornerRadius="20dp">
 
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- ====== MAPA ====== -->
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
@@ -238,57 +221,66 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp"
                 android:padding="12dp"
                 app:cardBackgroundColor="#3B4360"
                 app:cardCornerRadius="20dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/hello"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="140dp"
-                        android:layout_marginLeft="50dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toEndOf="@id/avatar"
+                        android:layout_gravity="center_horizontal"
                         android:text="Daily mission"
                         android:textColor="#EAF0FF"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="21h 43min 08s"
+                            android:textColor="@color/white"
+                            android:background="#2C3142"
+                            android:padding="8dp"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="6km"
+                            android:textColor="@color/white"
+                            android:background="#2C3142"
+                            android:padding="8dp"/>
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="21h 43min 08s"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Kraków, Stare miasto"
                         android:textColor="@color/white"
-                        android:layout_marginTop="40dp"
-                        android:layout_marginStart="40dp"/>
+                        android:background="#2C3142"
+                        android:padding="8dp"/>
 
+                </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="270dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="40dp"
-                        android:text="6km"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="21h 43min 08s"
-                        android:textColor="@color/white"
-                        android:layout_marginTop="80dp"
-                        android:layout_marginStart="140dp"/>
-
-                </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
+
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -307,15 +299,158 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- DOLNA NAWIGACJA -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:menu="@menu/bottom_nav_menu"
-        android:background="#111218"
-        app:itemIconTint="@color/bottom_nav_tint"
-        app:itemTextColor="@color/bottom_nav_tint"
-        app:layout_constraintBottom_toBottomOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:background="#111218"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+            <LinearLayout
+                android:id="@+id/nav_home"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_home"
+                    android:contentDescription="Home"
+                    app:tint="#FFFFFF"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Home"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/nav_map"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_map"
+                    android:contentDescription="Map"
+                    app:tint="#FFFFFF"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Map"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/nav_shop"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_shop"
+                    android:contentDescription="Shop"
+                    app:tint="#FFFFFF"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shop"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/nav_profile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_profile"
+                    android:contentDescription="Profile"
+                    app:tint="#FFFFFF"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/nav_groups"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_groups"
+                    android:contentDescription="Groups"
+                    app:tint="#FFFFFF"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Groups"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="2dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
