@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import android.location.Location
 import android.os.Looper
 import android.util.Log
+import android.widget.Button
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.Circle
@@ -38,12 +39,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var locationUpdatesStarted = false
+    private var completedMissions = mutableSetOf<String>()
     private companion object {
-        const val MIN_DISTANCE_METERS = 50.0  // 50 meters minimum
-        const val MAX_DISTANCE_METERS = 200.0 // 200 meters maximum
+        const val MIN_DISTANCE_METERS = 20.0  // 50 meters minimum
+        const val MAX_DISTANCE_METERS = 40.0 // 200 meters maximum
         const val METERS_PER_DEGREE = 111320.0 // meters in one degree
 
         const val MISSION_COMPLETE_DISTANCE = 30.0 // 30 meters
+
+        const val XP_PER_MISSION = 50 // 50 exp for one mission
     }
     data class Mission(
         val id: String,
@@ -55,7 +59,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     val missions = mutableListOf<Mission>()
     private var missionGenerated = false
-    //private val missionMarkers = mutableListOf<String, Marker>()
 
     private fun openStreetView(mission: Mission) {
         val intent = Intent(this, StreetViewActivity::class.java).apply {
@@ -99,17 +102,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mission = missions.find { it.id == missionId }
         mission?.let {
             it.completed = true
+            completedMissions.add(missionId)
+
             it.circle?.apply {
                 strokeColor = Color.parseColor("#00FF00")
                 fillColor = Color.parseColor("#2200FF00")
             }
             Toast.makeText(this, "Mission ${mission.id} completed!", Toast.LENGTH_SHORT).show()
+            sendMissionResultToMainActivity()
         }
     }
 
-    private fun updateMissionMarker(mission: Mission) {
-        Toast.makeText(this, "Mission ${mission.id} completed!", Toast.LENGTH_SHORT).show()
+    private fun sendMissionResultToMainActivity() {
+        val resultIntent = Intent().apply {
+            putExtra("mission_completed", true)
+            putExtra("xp_earned", XP_PER_MISSION)
+            putExtra("completed_mission_id", completedMissions.lastOrNull())
+            putExtra("total_xp_earned", completedMissions.size * XP_PER_MISSION)
+            putExtra("completed_missions_count", completedMissions.size)
+        }
+        setResult(RESULT_OK, resultIntent)
     }
+
     private fun generateMissionsAroundUser(userLat: Double, userLng: Double) {
         if (missionGenerated) return
 
@@ -164,6 +178,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        findViewById<Button>(R.id.btnBackToMain).setOnClickListener {
+            finishWithResult()
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -279,6 +297,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun finishWithResult() {
+        val resultIntent = Intent().apply {
+            putExtra("mission_completed", completedMissions.isNotEmpty())
+            putExtra("total_xp_earned", completedMissions.size * XP_PER_MISSION)
+            putExtra("completed_missions_count", completedMissions.size)
+        }
+        setResult(RESULT_OK, resultIntent)
+        finish()
+    }
+
+    override fun onBackPressed() {
+        finishWithResult()
     }
 }
 

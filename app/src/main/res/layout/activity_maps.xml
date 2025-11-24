@@ -13,4 +13,17 @@
         android:layout_height="match_parent"
         tools:context=".MapsActivity" />
 
+    <Button
+        android:id="@+id/btnBackToMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="260dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/black"
+        android:text="Back to Map"
+        android:textColor="@color/white" />
+
 </RelativeLayout>
