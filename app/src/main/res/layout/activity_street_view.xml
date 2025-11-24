@@ -17,6 +17,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
         android:text="Back to Map"
+        android:textColor="@color/white"
         android:backgroundTint="@color/black" />
 
 </RelativeLayout>

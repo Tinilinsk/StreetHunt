@@ -8,6 +8,15 @@ android {
     namespace = "com.example.testmap"
     compileSdk = 35
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("my-release-key.keystore")
+            storePassword = "streethunt"
+            keyAlias = "testmap_release"
+            keyPassword = "streethunt"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.example.testmap"
         minSdk = 24
@@ -20,6 +29,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
