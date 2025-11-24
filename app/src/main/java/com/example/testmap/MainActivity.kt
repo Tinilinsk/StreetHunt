@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         private const val KEY_NICKNAME = "nickname"
         private const val KEY_EXPERIENCE = "experience"
         private const val DEFAULT_NICKNAME = "Player"
+        private const val LEVEL_UP_THRESHOLD = 100
     }
 
     private val mapsActivityResultLauncher = registerForActivityResult(
@@ -69,11 +71,10 @@ class MainActivity : AppCompatActivity() {
         // Load player data when activity starts
         loadPlayerData()
 
-        // ИСПРАВЛЕНИЕ: Используем mapsActivityResultLauncher вместо startActivity
         findViewById<Button>(R.id.supabutton).setOnClickListener {
             Log.d("MainActivity", "Launching MapsActivity with result launcher")
             val intent = Intent(this, MapsActivity::class.java)
-            mapsActivityResultLauncher.launch(intent) // ВОТ ТАК НУЖНО!
+            mapsActivityResultLauncher.launch(intent)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -105,7 +106,6 @@ class MainActivity : AppCompatActivity() {
 
         // Update UI with loaded data
         findViewById<TextView>(R.id.nicknameTextView).text = nickname
-        findViewById<TextView>(R.id.experienceTextView).text = "XP: $experience"
 
         Log.d("PlayerData", "Loaded - Nickname: $nickname, XP: $experience")
     }
@@ -117,9 +117,25 @@ class MainActivity : AppCompatActivity() {
         editor.putInt(KEY_EXPERIENCE, newExp)
         editor.apply()
 
-        findViewById<TextView>(R.id.experienceTextView).text = "XP: $newExp"
+        updateExperienceProgress(newExp)
 
         Log.d("PlayerData", "Added $amount XP. Total: $newExp")
+    }
+
+    private fun updateExperienceProgress(experience: Int) {
+        val progressBar = findViewById<ProgressBar>(R.id.experienceProgressBar)
+
+        val level = (experience / LEVEL_UP_THRESHOLD) + 1
+        val currentLevelExp = experience % LEVEL_UP_THRESHOLD
+
+        progressBar.max = LEVEL_UP_THRESHOLD
+        progressBar.progress = currentLevelExp
+
+        findViewById<TextView>(R.id.level_num).text = "$level"
+
+        if (currentLevelExp == 0 && experience > 0) {
+            Toast.makeText(this, "🎉 Level Up! You reached level $level!", Toast.LENGTH_LONG).show()
+        }
     }
 
     fun updateNickname(newNickname: String) {
