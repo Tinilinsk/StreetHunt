@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Tło koło globu -->
+    <path
+        android:fillColor="#2ECC71"
+        android:pathData="M24,2 A22,22 0 1,0 24,46 A22,22 0 1,0 24,2 Z"/>
+
+    <!-- Kontury kontynentów / mapy (styl minimalistyczny) -->
+    <path
+        android:fillColor="#27AE60"
+        android:pathData="M16,18 C18,14 30,14 32,18 C34,22 26,30 20,28 Z"/>
+
+    <!-- Stylizowana głowa awatara (minimal) -->
+    <path
+        android:fillColor="#F1C40F"
+        android:pathData="M24,14 A4,4 0 1,0 24,22 A4,4 0 1,0 24,14 Z"/>
+
+    <!-- Kompas (akcent kierunku) -->
+    <path
+        android:fillColor="#F39C12"
+        android:pathData="M24,24 L28,20 L24,24 L20,20 Z"/>
+</vector>
