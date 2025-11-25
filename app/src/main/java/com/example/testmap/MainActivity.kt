@@ -28,6 +28,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mapView: MapView
 
+    private var currentButtonState = 0
+    private val sharedPrefs by lazy {
+        getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+    }
+
     companion object {
         private const val PREFS_NAME = "player_data"
         private const val KEY_NICKNAME = "nickname"
@@ -90,15 +95,25 @@ class MainActivity : AppCompatActivity() {
             mapsActivityResultLauncher.launch(intent)
         }
 
+        findViewById<LinearLayout>(R.id.nav_profile).setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        findViewById<LinearLayout>(R.id.nav_profile).setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+        currentButtonState = sharedPrefs.getInt("button_state", 0)
+        updateButtonAppearance()
+
+        findViewById<TextView>(R.id.radius).setOnClickListener {
+            currentButtonState = (currentButtonState + 1) % 3
+            updateButtonAppearance()
+
+            sharedPrefs.edit().putInt("button_state", currentButtonState).apply()
         }
 
         // show level on start app
@@ -111,6 +126,21 @@ class MainActivity : AppCompatActivity() {
 
         progressBar.max = LEVEL_UP_THRESHOLD
         progressBar.progress = currentLevelExp
+    }
+
+    private fun updateButtonAppearance() {
+        val button = findViewById<TextView>(R.id.radius)
+        when (currentButtonState) {
+            0 -> {
+                button.text = "1km"
+            }
+            1 -> {
+                button.text = "2km"
+            }
+            2 -> {
+                button.text = "3km"
+            }
+        }
     }
 
     private fun miniMap() {

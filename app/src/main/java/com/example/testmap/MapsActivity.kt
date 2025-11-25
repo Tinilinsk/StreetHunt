@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -27,22 +28,29 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.Marker
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
 
+    private val sharedPrefs by lazy {
+        getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+    }
+
+//    private var missionGenerated: Boolean
+//        get() = getSharedPreferences("mission_prefs", MODE_PRIVATE)
+//            .getBoolean("mission_generated", false)
+//        set(value) = getSharedPreferences("mission_prefs", MODE_PRIVATE)
+//            .edit()
+//            .putBoolean("mission_generated", value)
+//            .apply()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var locationUpdatesStarted = false
     private var completedMissions = mutableSetOf<String>()
     private companion object {
-        const val MIN_DISTANCE_METERS = 20.0  // 50 meters minimum
-        const val MAX_DISTANCE_METERS = 40.0 // 200 meters maximum
+        const val MIN_DISTANCE_METERS = 500.0  // 500 meters minimum
+        var MAX_DISTANCE_METERS = 1000.0 // 1000 meters maximum
         const val METERS_PER_DEGREE = 111320.0 // meters in one degree
 
         const val MISSION_COMPLETE_DISTANCE = 30.0 // 30 meters
@@ -182,6 +190,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         findViewById<Button>(R.id.btnBackToMain).setOnClickListener {
             finishWithResult()
         }
+
+        val buttonState = sharedPrefs.getInt("button_state", 0)
+        when (buttonState) {
+            0 -> setupMapForState1()
+            1 -> setupMapForState2()
+            2 -> setupMapForState3()
+        }
+    }
+
+    private fun setupMapForState1() {
+        MAX_DISTANCE_METERS = 1000.0
+    }
+
+    private fun setupMapForState2() {
+        MAX_DISTANCE_METERS = 2000.0
+    }
+
+    private fun setupMapForState3() {
+        MAX_DISTANCE_METERS = 3000.0
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
