@@ -187,7 +187,7 @@
                         android:layout_marginBottom="24dp"
                         android:layout_toEndOf="@id/avatar"
                         android:indeterminate="false"
-                        android:progress="40"
+                        android:progress="0"
                         android:progressDrawable="@drawable/progress_green_rounded" />
 
 
