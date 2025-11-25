@@ -26,7 +26,7 @@
 
 <h3>Instant Play, Maximum Engagement</h3>
 <ul>
-  <li><strong>Dynamic mission system</strong> - AI-generated location-based challenges around user's current position</li>
+  <li><strong>Dynamic mission system</strong> - Generated location-based challenges around user's current position</li>
   <li><strong>Gamified progress</strong> - Visual XP system with level progression and achievement tracking</li>
   <li><strong>Live demo available</strong> - APK file ready for testing in releases section</li>
 </ul>
