@@ -1,97 +1,77 @@
-<h1>🗺️ StreetHunt - Urban Exploration Game</h1>
+# 🗺️ StreetHunt - Urban Exploration Game
 
-<h2>🏆 Hack Heroes 2025 Submission</h2>
+## 🏆 Hack Heroes 2025 Submission
 
-<h3>Revolutionizing Urban Mobility Through Gamification</h3>
+### Revolutionizing Urban Mobility Through Gamification
 
-<p>StreetHunt addresses critical challenges facing today's youth: <strong>physical inactivity, social isolation, and declining mental wellbeing</strong> caused by excessive screen time. Our solution transforms urban exploration into an engaging game that naturally encourages outdoor activity and social interaction.</p>
+StreetHunt addresses critical challenges facing today's youth: **physical inactivity, social isolation, and declining mental wellbeing** caused by excessive screen time. Our solution transforms urban exploration into an engaging game that naturally encourages outdoor activity and social interaction.
 
-<h2>🛠️ Technology Stack</h2>
+## 🛠️ Technology Stack
 
-<h3>Current Implementation</h3>
-<ul>
-  <li><strong>Kotlin / Android Studio</strong> - Primary language and development environment</li>
-  <li><strong>Google Maps API</strong> - Map display and destination points</li>
-  <li><strong>Android Location Services</strong> - User location verification (GPS)</li>
-</ul>
+### Current Implementation
+- **Kotlin / Android Studio** - Primary language and development environment
+- **Google Maps API** - Map display and destination points
+- **Android Location Services** - User location verification (GPS)
+- **Figma** - UI/UX design and prototyping
 
-<h3>Future Architecture</h3>
-<ul>
-  <li><strong>Backend Integration</strong> (Firebase or custom API) for groups, seasons, and data synchronization</li>
-  <li><strong>Cloud Storage</strong> for user progress and social features</li>
-  <li><strong>Real-time Multiplayer</strong> for team challenges</li>
-</ul>
+### Future Architecture
+- **Backend Integration** (Firebase or custom API) for groups, seasons, and data synchronization
+- **Cloud Storage** for user progress and social features
+- **Real-time Multiplayer** for team challenges
 
-<h2>🎯 Core Innovation</h2>
+## 🎯 Core Innovation
 
-<h3>Instant Play, Maximum Engagement</h3>
-<ul>
-  <li><strong>Dynamic mission system</strong> - Generated location-based challenges around user's current position</li>
-  <li><strong>Gamified progress</strong> - Visual XP system with level progression and achievement tracking</li>
-  <li><strong>Live demo available</strong> - APK file ready for testing in releases section</li>
-</ul>
+### Instant Play, Maximum Engagement
+- **Zero-registration access** - Prototype operates fully locally, no login required
+- **Dynamic mission system** - Generated location-based challenges around user's current position
+- **Gamified progress** - Visual XP system with level progression and achievement tracking
+- **Functional prototype available** - APK ready for testing in releases section
 
-<h2>🚀 How It Works</h2>
+## 🚀 How It Works
 
-<ol>
-  <li><strong>Daily missions</strong> - Three randomly generated location-based challenges</li>
-  <li><strong>GPS verification</strong> - Automatic completion detection when user reaches target area</li>
-  <li><strong>Progressive rewards</strong> - 50 XP per mission with visual progress indicators</li>
-</ol>
+1. **Daily missions** - Three randomly generated location-based challenges
+2. **GPS verification** - Automatic completion detection when user reaches target area
+3. **Progressive rewards** - 50 XP per mission with visual progress indicators
+4. **Social-ready architecture** - Prepared for group challenges and team competitions
 
-<h2>🌟 Unique Value Proposition</h2>
+## 🌟 Unique Value Proposition
 
-<h3>Unlike Traditional Fitness Apps</h3>
-<table>
-  <tr>
-    <th>StreetHunt</th>
-    <th>Others</th>
-  </tr>
-  <tr>
-    <td>Game-first approach</td>
-    <td>Exercise-focused</td>
-  </tr>
-  <tr>
-    <td>No barriers to entry</td>
-    <td>Complex registration</td>
-  </tr>
-  <tr>
-    <td>Dynamic content</td>
-    <td>Static challenges</td>
-  </tr>
-  <tr>
-    <td>Social integration</td>
-    <td>Individual experience</td>
-  </tr>
-</table>
+### Unlike Traditional Fitness Apps
+| StreetHunt | Others |
+|------------|--------|
+| Game-first approach | Exercise-focused |
+| No barriers to entry | Complex registration |
+| Dynamic content | Static challenges |
+| Social integration | Individual experience |
 
-<h2>📱 Ready For Testing</h2>
-<p><strong>Live APK available</strong> - Download the fully functional prototype from our GitHub releases to experience the complete user journey and core gameplay mechanics.</p>
+## 📱 Ready For Testing
+**Functional prototype available** - Download the APK from our GitHub releases to test the complete UX flow and implemented core gameplay features. All core logic is currently implemented locally in Kotlin as part of the prototype stage.
 
-<h2>🔮 Future Vision</h2>
+## 🎨 Design Process
+UI/UX interfaces were designed in Figma and implemented in the prototype.
+[View Figma Design]([https://figma.com/your-design-link-here](https://www.figma.com/design/sUNnsl49eOKVeCbN3zjeFm/Geoapp-UI?node-id=52-148&t=a0jlC0Me9HcwI647-1))
 
-<h3>Scalable Impact</h3>
-<ul>
-  <li><strong>Educational integration</strong> - School programs promoting physical activity</li>
-  <li><strong>Corporate wellness</strong> - Team-building and employee engagement</li>
-  <li><strong>Tourism enhancement</strong> - City exploration for visitors</li>
-  <li><strong>Community events</strong> - Local competitions and seasonal challenges</li>
-</ul>
+## 🔮 Future Vision
 
-<h2>🏅 Why We Deserve To Win</h2>
+### Scalable Impact
+- **Educational integration** - School programs promoting physical activity
+- **Corporate wellness** - Team-building and employee engagement
+- **Tourism enhancement** - City exploration for visitors
+- **Community events** - Local competitions and seasonal challenges
 
-<p>StreetHunt represents more than just an app - it's a <strong>behavioral change platform</strong> that:</p>
-<ul>
-  <li>✅ Directly addresses youth mental and physical health crises</li>
-  <li>✅ Uses technology to bring people together, not isolate them</li>
-  <li>✅ Has immediate real-world application in schools and communities</li>
-  <li>✅ Demonstrates technical sophistication with practical implementation</li>
-  <li>✅ <strong>Working prototype available</strong> for immediate evaluation</li>
-  <li>✅ <strong>Local-first approach</strong> ensures privacy and instant accessibility</li>
-</ul>
+## 🏅 Why We Deserve To Win
 
-<hr>
+StreetHunt represents more than just an app - it's a **behavioral change platform** that:
+- ✅ Directly addresses youth mental and physical health crises
+- ✅ Uses technology to bring people together, not isolate them
+- ✅ Has immediate real-world application in schools and communities
+- ✅ Demonstrates technical sophistication with practical implementation
+- ✅ **Functional prototype available** for immediate testing
+- ✅ **Local-first approach** ensures privacy and instant accessibility
+- ✅ **Professional design process** with Figma prototyping
 
-<p><strong>Turning every city into an adventure playground - one mission at a time.</strong></p>
+---
 
-<p><em>Currently in prototype stage for Hack Heroes 2025 - showcasing complete UX flow and core functionality with live APK demo</em></p>
+**Turning every city into an adventure playground - one mission at a time.**
+
+*Currently in prototype stage for Hack Heroes 2025 - showcasing full UX flow and implemented core gameplay features*
