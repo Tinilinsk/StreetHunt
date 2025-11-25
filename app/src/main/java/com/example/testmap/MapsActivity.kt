@@ -38,13 +38,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     }
 
-//    private var missionGenerated: Boolean
-//        get() = getSharedPreferences("mission_prefs", MODE_PRIVATE)
-//            .getBoolean("mission_generated", false)
-//        set(value) = getSharedPreferences("mission_prefs", MODE_PRIVATE)
-//            .edit()
-//            .putBoolean("mission_generated", value)
-//            .apply()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var locationUpdatesStarted = false
     private var completedMissions = mutableSetOf<String>()
@@ -276,7 +269,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (locationUpdatesStarted) return
 
         val locationRequest = LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY, 5000 // 5 секунд
+            Priority.PRIORITY_HIGH_ACCURACY, 5000
         ).build()
 
         fusedLocationClient.requestLocationUpdates(
