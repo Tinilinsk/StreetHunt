@@ -15,11 +15,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+
+    private lateinit var mapView: MapView
 
     companion object {
         private const val PREFS_NAME = "player_data"
@@ -64,12 +70,18 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        mapView = findViewById(R.id.mapView)
+        mapView.onCreate(savedInstanceState)
+
+        miniMap()
+
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
         // Load player data when activity starts
         loadPlayerData()
+
 
         findViewById<Button>(R.id.supabutton).setOnClickListener {
             Log.d("MainActivity", "Launching MapsActivity with result launcher")
@@ -95,6 +107,15 @@ class MainActivity : AppCompatActivity() {
         progressBar.progress = currentLevelExp
     }
 
+    private fun miniMap() {
+        mapView.getMapAsync { googleMap ->
+            googleMap.uiSettings.isZoomControlsEnabled = true
+
+            val position = LatLng(52.2297, 21.0122) // Warszawa
+            googleMap.addMarker(MarkerOptions().position(position).title("Warszawa"))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 16f))
+        }
+    }
     private fun showMissionCompleteMessage(missionsCount: Int, xpEarned: Int) {
         val message = if (missionsCount > 1) {
             "Completed $missionsCount missions! +$xpEarned XP"
