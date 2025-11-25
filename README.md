@@ -1,35 +1,67 @@
-# TestMap - Android Maps Application
+🗺️ StreetHunt - Urban Exploration Game
+🏆 Hack Heroes 2025 Submission
+Revolutionizing Urban Mobility Through Gamification
+StreetHunt addresses critical challenges facing today's youth: physical inactivity, social isolation, and declining mental wellbeing caused by excessive screen time. Our solution transforms urban exploration into an engaging game that naturally encourages outdoor activity and social interaction.
 
-A simple Android application with Google Maps displaying Krakow city map.
+🎯 Core Innovation
+Instant Play, Maximum Engagement
+Zero-Registration Access: Start playing immediately with automatic progress saving
 
-## Quick Setup
+Dynamic Mission System: Generated location-based challenges around user's current position
 
-### 1. Clone Repository
-```bash
-git clone https://github.com/yourusername/TestMap.git
-2. Setup API Key
-Create local.properties file in project root and add:
+Gamified Progress: Visual XP system with level progression and achievement tracking
 
-Windows:
+Live Demo Available: APK file ready for testing in releases section
 
-properties
-sdk.dir=C\:\\Users\\USERNAME\\AppData\\Local\\Android\\Sdk
-MAPS_API_KEY="YOUR_GOOGLE_MAPS_API_KEY"
+Technical Excellence
+kotlin
+Built with Native Android:
+- Google Maps API & Location Services
+- Real-time geofencing with 30m precision  
+- Material Design 3 with dark theme
+- SharedPreferences for seamless data persistence
+🚀 How It Works
+Daily Missions: Three randomly generated location-based challenges
 
-3. Get Google Maps API Key
-Go to Google Cloud Console
+GPS Verification: Automatic completion detection when user reaches target area
 
-Create API key with restrictions:
+Progressive Rewards: 50 XP per mission with visual progress indicators
 
-APIs: Maps SDK for Android
+Social Ready: Architecture prepared for group challenges and team competitions
 
-Package name: your app package name
+🌟 Unique Value Proposition
+Unlike Traditional Fitness Apps
+StreetHunt	Others
+Game-first approach	Exercise-focused
+No barriers to entry	Complex registration
+Dynamic content	Static challenges
+Social integration	Individual experience
+📱 Ready for Testing
+Live APK Available: Download the fully functional prototype from our GitHub releases to experience the complete user journey and core gameplay mechanics.
 
-SHA-1: from ./gradlew signingReport
+🔮 Future Vision
+Scalable Impact
+Educational Integration: School programs promoting physical activity
 
-4. Run Application
-Open project in Android Studio
+Corporate Wellness: Team-building and employee engagement
 
-File → Sync Project with Gradle Files
+Tourism Enhancement: City exploration for visitors
 
-Run on device/emulator
+Community Events: Local competitions and seasonal challenges
+
+🏅 Why We Deserve to Win
+StreetHunt represents more than just an app - it's a behavioral change platform that:
+
+✅ Directly addresses youth mental and physical health crises
+
+✅ Uses technology to bring people together, not isolate them
+
+✅ Has immediate real-world application in schools and communities
+
+✅ Demonstrates technical sophistication with practical implementation
+
+✅ Working prototype available for immediate evaluation
+
+Turning every city into an adventure playground - one mission at a time.
+
+*Currently in prototype stage for Hack Heroes 2025 - showcasing complete UX flow and core functionality with live APK demo*
