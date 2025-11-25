@@ -72,6 +72,6 @@ StreetHunt represents more than just an app - it's a **behavioral change platfor
 
 ---
 
-**Turning every city into an adventure playground - one mission at a time.**
+<p><strong>Turning every city into an adventure playground - one mission at a time.</strong></p>
 
-*Currently in prototype stage for Hack Heroes 2025 - showcasing full UX flow and implemented core gameplay features*
+<p><em>Currently in prototype stage for Hack Heroes 2025 - showcasing complete UX flow and core functionality with live APK demo</em></p>
