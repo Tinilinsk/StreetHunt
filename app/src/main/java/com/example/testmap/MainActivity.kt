@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -16,10 +17,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -88,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         // Load player data when activity starts
         loadPlayerData()
 
+        updateLocationText()
 
         findViewById<LinearLayout>(R.id.nav_map).setOnClickListener {
             Log.d("MainActivity", "Launching MapsActivity with result launcher")
@@ -212,6 +216,51 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.nicknameTextView).text = newNickname
         Log.d("PlayerData", "Nickname updated to: $newNickname")
+    }
+
+    private fun updateLocationText() {
+        val locationText = findViewById<TextView>(R.id.adress)
+
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        try {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                if (location != null) {
+                    getAddressFromLocation(location.latitude, location.longitude) { address ->
+                        locationText.text = address ?: "Unknown location"
+                    }
+                } else {
+                    locationText.text = "Location unavailable"
+                }
+            }
+        } catch (e: SecurityException) {
+            locationText.text = "Location permission needed"
+        }
+    }
+
+    private fun getAddressFromLocation(lat: Double, lng: Double, callback: (String?) -> Unit) {
+        val geocoder = Geocoder(this, Locale.getDefault())
+
+        try {
+            val addresses = geocoder.getFromLocation(lat, lng, 1)
+            if (addresses?.isNotEmpty() == true) {
+                val address = addresses[0]
+                val locationName = if (address.locality != null) {
+                    if (address.subLocality != null) {
+                        "${address.locality}, ${address.subLocality}"
+                    } else {
+                        address.locality
+                    }
+                } else {
+                    "${address.latitude}, ${address.longitude}"
+                }
+                callback(locationName)
+            } else {
+                callback(null)
+            }
+        } catch (e: Exception) {
+            callback(null)
+        }
     }
 
 }
