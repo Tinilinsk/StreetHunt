@@ -205,14 +205,6 @@
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Generate Mission Button -->
-            <Button
-                android:id="@+id/supabutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Generate Random Mission"
-                android:layout_marginBottom="20dp"/>
-
             <!-- Daily Mission Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -342,6 +334,7 @@
             android:background="?attr/selectableItemBackground">
 
             <ImageView
+
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_map"

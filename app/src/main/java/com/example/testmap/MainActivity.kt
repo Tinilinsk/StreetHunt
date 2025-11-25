@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -83,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         loadPlayerData()
 
 
-        findViewById<Button>(R.id.supabutton).setOnClickListener {
+        findViewById<LinearLayout>(R.id.nav_map).setOnClickListener {
             Log.d("MainActivity", "Launching MapsActivity with result launcher")
             val intent = Intent(this, MapsActivity::class.java)
             mapsActivityResultLauncher.launch(intent)
