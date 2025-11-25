@@ -49,7 +49,7 @@ StreetHunt addresses critical challenges facing today's youth: **physical inacti
 
 ## 🎨 Design Process
 UI/UX interfaces were designed in Figma and implemented in the prototype.
-[View Figma Design]([https://figma.com/your-design-link-here](https://www.figma.com/design/sUNnsl49eOKVeCbN3zjeFm/Geoapp-UI?node-id=52-148&t=a0jlC0Me9HcwI647-1))
+[![Figma Design](https://img.shields.io/badge/Figma-Design-FF6B6B?logo=figma&logoColor=white)](https://www.figma.com/design/sUNnsl49eOKVeCbN3zjeFm/Geoapp-UI?node-id=52-148&t=a0jlC0Me9HcwI647-1)
 
 ## 🔮 Future Vision
 
