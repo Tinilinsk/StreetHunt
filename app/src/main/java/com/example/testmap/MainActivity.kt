@@ -82,6 +82,9 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val currentExp = sharedPreferences.getInt(KEY_EXPERIENCE, 0)
+        val level = (currentExp / LEVEL_UP_THRESHOLD) + 1
+        findViewById<TextView>(R.id.level_num).text = "$level"
     }
 
     private fun showMissionCompleteMessage(missionsCount: Int, xpEarned: Int) {
