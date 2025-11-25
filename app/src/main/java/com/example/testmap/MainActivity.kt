@@ -7,6 +7,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -14,17 +16,24 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
 
+    private lateinit var mapView: MapView
+
     companion object {
         private const val PREFS_NAME = "player_data"
         private const val KEY_NICKNAME = "nickname"
         private const val KEY_EXPERIENCE = "experience"
         private const val DEFAULT_NICKNAME = "Player"
+        private const val LEVEL_UP_THRESHOLD = 100
     }
 
     private val mapsActivityResultLauncher = registerForActivityResult(
@@ -62,6 +71,11 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        mapView = findViewById(R.id.mapView)
+        mapView.onCreate(savedInstanceState)
+
+        miniMap()
+
         // Initialize SharedPreferences
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
@@ -69,11 +83,11 @@ class MainActivity : AppCompatActivity() {
         // Load player data when activity starts
         loadPlayerData()
 
-        // ИСПРАВЛЕНИЕ: Используем mapsActivityResultLauncher вместо startActivity
-        findViewById<Button>(R.id.supabutton).setOnClickListener {
+
+        findViewById<LinearLayout>(R.id.nav_map).setOnClickListener {
             Log.d("MainActivity", "Launching MapsActivity with result launcher")
             val intent = Intent(this, MapsActivity::class.java)
-            mapsActivityResultLauncher.launch(intent) // ВОТ ТАК НУЖНО!
+            mapsActivityResultLauncher.launch(intent)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -81,8 +95,28 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // show level on start app
+        val currentExp = sharedPreferences.getInt(KEY_EXPERIENCE, 0)
+        val level = (currentExp / LEVEL_UP_THRESHOLD) + 1
+        findViewById<TextView>(R.id.level_num).text = "$level"
+
+        val progressBar = findViewById<ProgressBar>(R.id.experienceProgressBar)
+        val currentLevelExp = currentExp % LEVEL_UP_THRESHOLD
+
+        progressBar.max = LEVEL_UP_THRESHOLD
+        progressBar.progress = currentLevelExp
     }
 
+    private fun miniMap() {
+        mapView.getMapAsync { googleMap ->
+            googleMap.uiSettings.isZoomControlsEnabled = true
+
+            val position = LatLng(52.2297, 21.0122) // Warszawa
+            googleMap.addMarker(MarkerOptions().position(position).title("Warszawa"))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 16f))
+        }
+    }
     private fun showMissionCompleteMessage(missionsCount: Int, xpEarned: Int) {
         val message = if (missionsCount > 1) {
             "Completed $missionsCount missions! +$xpEarned XP"
@@ -105,7 +139,6 @@ class MainActivity : AppCompatActivity() {
 
         // Update UI with loaded data
         findViewById<TextView>(R.id.nicknameTextView).text = nickname
-        findViewById<TextView>(R.id.experienceTextView).text = "XP: $experience"
 
         Log.d("PlayerData", "Loaded - Nickname: $nickname, XP: $experience")
     }
@@ -117,9 +150,25 @@ class MainActivity : AppCompatActivity() {
         editor.putInt(KEY_EXPERIENCE, newExp)
         editor.apply()
 
-        findViewById<TextView>(R.id.experienceTextView).text = "XP: $newExp"
+        updateExperienceProgress(newExp)
 
         Log.d("PlayerData", "Added $amount XP. Total: $newExp")
+    }
+
+    private fun updateExperienceProgress(experience: Int) {
+        val progressBar = findViewById<ProgressBar>(R.id.experienceProgressBar)
+
+        val level = (experience / LEVEL_UP_THRESHOLD) + 1
+        val currentLevelExp = experience % LEVEL_UP_THRESHOLD
+
+        progressBar.max = LEVEL_UP_THRESHOLD
+        progressBar.progress = currentLevelExp
+
+        findViewById<TextView>(R.id.level_num).text = "$level"
+
+        if (currentLevelExp == 0 && experience > 0) {
+            Toast.makeText(this, "🎉 Level Up! You reached level $level!", Toast.LENGTH_LONG).show()
+        }
     }
 
     fun updateNickname(newNickname: String) {
