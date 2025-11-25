@@ -96,6 +96,11 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        findViewById<LinearLayout>(R.id.nav_profile).setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
         // show level on start app
         val currentExp = sharedPreferences.getInt(KEY_EXPERIENCE, 0)
         val level = (currentExp / LEVEL_UP_THRESHOLD) + 1

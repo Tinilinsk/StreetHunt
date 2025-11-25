@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback
 import com.google.android.gms.maps.StreetViewPanorama
-import com.google.android.gms.maps.StreetViewPanoramaFragment
 import com.google.android.gms.maps.SupportStreetViewPanoramaFragment
 import com.google.android.gms.maps.model.LatLng
 
